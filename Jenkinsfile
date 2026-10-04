@@ -32,4 +32,29 @@ pipeline {
             }
         }
     }
+
+    post {
+        success {
+            emailext(
+                to: 'xrd132006lera@gmail.com',
+                subject: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """Збірка пройшла успішно.
+
+Проєкт: ${env.JOB_NAME}
+Номер збірки: ${env.BUILD_NUMBER}
+Посилання: ${env.BUILD_URL}"""
+            )
+        }
+        failure {
+            emailext(
+                to: 'xrd132006lera@gmail.com',
+                subject: "FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """Збірка завершилась з помилкою!
+
+Проєкт: ${env.JOB_NAME}
+Номер збірки: ${env.BUILD_NUMBER}
+Логи: ${env.BUILD_URL}console"""
+            )
+        }
+    }
 }
